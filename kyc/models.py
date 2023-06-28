@@ -138,6 +138,17 @@ class KycApplication(BaseModel):
         verbose_name=_("Place of birth"),
         blank=True, null=True, max_length=255,
         help_text=_("The place of birth of the user."))
+    
+    date_of_birth = models.DateField(
+        verbose_name=_("Date of Birth"),
+        blank=True, null=True,
+        help_text=_("The birth date of the customer."))
+
+    job_title = models.CharField(
+        max_length=150,
+        verbose_name=_("Job Title"),
+        blank=True, null=True,
+        help_text=_("The job title of the customer."))
 
     identification_number = models.CharField(
         max_length=50,
