@@ -64,3 +64,16 @@ class Account_Creation (  serializers.ModelSerializer ):
         user = User(**cleaned_data)
         user.set_password(cleaned_data["password"])
         user.save()
+
+
+
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    model = User
+
+    """
+    Serializer for password change endpoint.
+    """
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)

@@ -8,5 +8,5 @@ class KycApplicationAdmin (admin.ModelAdmin):
                      'kyc_status', 'kyc_status_note','status_update_date','politically_exposed_person', 'place_of_birth','date_of_birth','identification_number',
                      'identification_issue_date', 'identification_expiry', 'kyc_submitted_ip_address','registered_ip_address','accept_terms',
                      'agreed_to_data_usage','citizenship','second_citizenship','country_residence','user','reviewer', 'kyc_review_date','reviewer_ip_address',
-                     'kyc_refused_code')
+                     'kyc_refused_code', 'job_title','state')
     list_display_links = ('legal_first_names', 'legal_last_names', 'user')

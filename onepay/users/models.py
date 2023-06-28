@@ -10,13 +10,12 @@ from locations.models import Country
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
 
-# reset password model imports
-# from django.dispatch import receiver
 
-# from django_rest_passwordreset.signals import reset_password_token_created
+from django.dispatch import receiver
+
+from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail
 from django.utils import timezone
-
 
 
 
@@ -28,15 +27,6 @@ class User(AbstractUser):
     """
 
     objects = UserManager()
-    # USER CHOICES
-    KYC_STATUS = (
-        ('unverified', _('Unverifed')),
-        ('pending', _('Pending')),
-        ('verified', _('Verified')),
-        ('action_required', _('Action Required')),
-        ('cancelled', _('Cancelled')),
-        ('rejected', _('Rejected/Refused'))
-    )
 
     #: First and last name do not cover name patterns around the globe
     id = models.UUIDField(
@@ -107,3 +97,21 @@ class Wallet(BaseModel):
     
     def __str__(self):
         return self.wallet_id
+
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(sender, instance, reset_password_token, *args, **kwargs):
+
+    email_plaintext_message = "{}?token={}".format(reverse('password_reset:reset-password-request'), reset_password_token.key)
+
+    send_mail(
+        # title:
+        "Password Reset for {title}".format(title="Your Recuity account"),
+        # message:
+        email_plaintext_message,
+        # from:
+        "noreply@recuity.com",
+        # to:
+        [reset_password_token.user.email]
+    )

@@ -7,8 +7,7 @@ from onepay.users.models import User
 
 from helpers.common.basemodel import BaseModel
 from helpers.common.choices import ModelChoices
-from locations.models import Country
-
+from locations.models import Country, State
 
 class KycApplication(BaseModel):
     """
@@ -54,11 +53,6 @@ class KycApplication(BaseModel):
         blank=True, null=True,
         verbose_name=_('Address Line 2'),
         help_text=_("""The Address Line 2 of the user submitting KYC application. Must be from The user's country of Residence indicated at the time of registration."""))
-
-    state = models.CharField(
-        max_length=255,
-        verbose_name=_('State/Region'),
-        help_text=_("""The State/Region/Province of the user submitting KYC application. Must be from The user's country of Residence indicated at the time of registration."""))
 
     zip_code = models.CharField(
         max_length=10,
@@ -214,6 +208,13 @@ class KycApplication(BaseModel):
         verbose_name=_('Country of Residence'),
         on_delete=models.CASCADE,
         help_text=_("""The country in which the person primarily resides. A proof of residence is required and requested upon change of residence."""))
+
+    state = models.ForeignKey(
+        State,
+        blank= True,
+        on_delete=models.CASCADE,
+        verbose_name=_('State/Region'),
+        help_text=_("""The State/Region/Province of the user submitting KYC application. Must be from The user's country of Residence indicated at the time of registration."""))
 
     user = models.ForeignKey(
         User,
