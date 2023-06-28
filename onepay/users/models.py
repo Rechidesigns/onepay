@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from onepay.users.managers import UserManager
 import uuid
-from locations.models import Country, State
+from locations.models import Country
 # import django packages
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models

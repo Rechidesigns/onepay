@@ -1,17 +1,15 @@
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class ModelChoices:
 
-    BANK_STATEMENT = "BANK_STATEMENT"
-    CREDIT_CARD_STATEMENT = "CREDIT_CARD_STATEMENT"
+
     UTILITY = "UTILITY"
 
+
     PROOF_OF_ADDRESS_TYPE = (
-        (BANK_STATEMENT, _("Bank Statement")),
-        (CREDIT_CARD_STATEMENT, _("Credit Card Statement")),
-        (UTILITY, _("Utility Bill"))
+        (UTILITY, _("Utility Bill")),
     )
 
     PHOTO_IDENTIFICATION_TYPE = (
