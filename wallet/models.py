@@ -11,7 +11,7 @@ from django.utils import timezone
 
 
 class Wallet(BaseModel):
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         User, null=True, 
         on_delete=models.CASCADE
         )

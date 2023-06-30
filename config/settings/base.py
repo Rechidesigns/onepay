@@ -109,6 +109,7 @@ LOCAL_APPS = [
     "locations.apps.LocationsConfig",
     "kyc.apps.KycConfig",
     "wallet.apps.WalletConfig",
+    'card.apps.CardConfig',
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
