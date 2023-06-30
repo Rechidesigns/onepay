@@ -35,6 +35,7 @@ class Wallet(BaseModel):
         return self.user.__str__()
 
 
+
 class WalletTransaction(models.Model):
 
     TRANSACTION_TYPES = (
