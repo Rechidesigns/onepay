@@ -11,3 +11,4 @@ class UsersConfig(AppConfig):
             import onepay.users.signals  # noqa: F401
         except ImportError:
             pass
+

@@ -32,7 +32,7 @@ class Account_Creation (  serializers.ModelSerializer ):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name','email', 'contact_number', 'password' ]
+        fields = ['first_name', 'last_name','email', 'pin', 'contact_number', 'password' ]
 
     def get_cleaned_data(self):
         return {

@@ -49,6 +49,12 @@ class Migration(migrations.Migration):
                         unique=True, max_length=254, verbose_name="email address"
                     ),
                 ),
+                # (
+                #     "wallet_id",
+                #     models.CharField(
+                #         blank=True, null=True, max_length=10, unique=True
+                #     )
+                # ),
                 (
                     "is_staff",
                     models.BooleanField(

@@ -1,3 +1,4 @@
+import random
 from django.contrib.auth.models import AbstractUser
 from django.db.models import CharField, EmailField
 from django.urls import reverse
@@ -16,6 +17,9 @@ from django.dispatch import receiver
 from django_rest_passwordreset.signals import reset_password_token_created
 from django.core.mail import send_mail
 from django.utils import timezone
+# from shortuuid.django_fields import ShortUUIDFields
+# from shortuuidfield import ShortUUIDField
+
 
 
 
@@ -70,11 +74,37 @@ class User(AbstractUser):
         help_text=_("The contact number of the customer.")
     )
 
+    wallet_id = models.CharField(
+        blank=True, null=True,
+        max_length=10, 
+        unique=True)
+
+    pin = models.CharField(
+        max_length=4,
+        default='0000',
+        help_text=_("The PIN of the customer.")
+    )
+
+    def save(self, *args, **kwargs):
+        if not self.wallet_id:
+            self.wallet_id = self.generate_wallet_id()
+
+        super(User, self).save(*args, **kwargs)
+
+    def generate_wallet_id(self):
+        wallet_id = ''.join([str(random.randint(0, 9)) for _ in range(10)])
+        return wallet_id
+
+
+    def send_account_creation_email(self):
+        subject = "OnePay Account Created"
+        message = f"Dear {self.first_name},\n\nYour OnePay account has been created successfully!\n\nAccount Number: {self.wallet_id}\n\n Quickly complete the KYC section so you can enjoy the full benefits of OnePay. Thank you for joining OnePay!"
+        send_mail(subject, message, None, [self.email])
 
     class Meta:
         verbose_name = _("Register User")
         verbose_name_plural = _("Registered Users")
-
+        
     def __str__(self):
         return self.email
 
@@ -88,15 +118,6 @@ class User(AbstractUser):
         return reverse("users:detail", kwargs={"email": self.pk})
     
 
-
-class Wallet(BaseModel):
-    wallet_id = models.OneToOneField(
-        User, 
-        on_delete=models.CASCADE
-        )
-    
-    def __str__(self):
-        return self.wallet_id
 
 
 
@@ -115,3 +136,4 @@ def password_reset_token_created(sender, instance, reset_password_token, *args, 
         # to:
         [reset_password_token.user.email]
     )
+
