@@ -43,6 +43,14 @@ urlpatterns += [
     ),
 ]
 
+
+
+urlpatterns += [
+
+    path("wallet/", include("wallet.api.urls")),
+    
+]
+
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
     # these url in browser to see how these error pages look like.
