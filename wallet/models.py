@@ -13,17 +13,24 @@ from django.utils import timezone
 class Wallet(BaseModel):
     user = models.ForeignKey(
         User, null=True, 
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name= _("Wallet"),
+        help_text= _("Wallet information/ID")
         )
 
     currency = models.CharField(
         max_length=50, 
-        default='NGN'
+        default='NGN',
+        verbose_name= _("Currency"),
+        help_text= _("The type of currency the wallet will operate on")
+
         )
     
     created_at = models.DateTimeField(
         default=timezone.now, 
-        null=True
+        null=True,
+        verbose_name= _("Time Created"),
+        help_text= _("The time and date the card was created")
         )
     
     class Meta:
@@ -32,49 +39,63 @@ class Wallet(BaseModel):
 
 
     def __str__(self):
-        return self.user.__str__()
+        return self.user
 
+
+
+TRANSACTION_TYPES = (
+
+        ('deposit', _('deposit')),
+        ('transfer', _('transfer')),
+        ('withdraw', _('withdraw')),
+    )
 
 
 class WalletTransaction(models.Model):
 
-    TRANSACTION_TYPES = (
-        ('deposit', 'deposit'),
-        ('transfer', 'transfer'),
-        ('withdraw', 'withdraw'),
-    )
-
     wallet = models.ForeignKey(
         Wallet, null=True, 
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        verbose_name= _("Time Created"),
+        help_text= _("The time and date the card was created")
         )
     
     transaction_type = models.CharField(
         max_length=200, 
         null=True,  
-        choices=TRANSACTION_TYPES
+        choices=TRANSACTION_TYPES,
+        verbose_name= _("Time Created"),
+        help_text= _("The time and date the card was created")
         )
     
     amount = models.DecimalField(
         max_digits=100, 
         null=True, 
-        decimal_places=2
+        decimal_places=2,
+        verbose_name= _("Time Created"),
+        help_text= _("The time and date the card was created")
         )
     
     timestamp = models.DateTimeField(
         default=timezone.now, 
-        null=True
+        null=True,
+        verbose_name= _("Time Created"),
+        help_text= _("The time and date the card was created")
         )
     
     status = models.CharField(
         max_length=100, 
-        default="pending"
+        default="pending",
+        verbose_name= _("Time Created"),
+        help_text= _("The time and date the card was created")
         )
     
     paystack_payment_reference = models.CharField(
         max_length=100, 
         default='', 
-        blank=True
+        blank=True,
+        verbose_name= _("Time Created"),
+        help_text= _("The time and date the card was created")
         )
     
     class Meta:
@@ -82,5 +103,6 @@ class WalletTransaction(models.Model):
         verbose_name_plural = _("Wallet Transactions")
 
     def __str__(self):
-        return self.wallet.user.__str__()
+        return str(self.wallet)
+
     

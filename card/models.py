@@ -50,3 +50,9 @@ class Card(BaseModel):
     class Meta:
         verbose_name = _("Card")
         verbose_name_plural = _("Cards")
+
+    # def __str__(self):
+    #     return self.card_name
+    
+    def __str__(self):
+        return f"{self.card_name} ({self.card_number})"

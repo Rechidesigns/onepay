@@ -345,6 +345,10 @@ SIMPLE_JWT = {
    
 }
 
+PAYSTACK_SECRET_KEY = ""
+
+PAYSTACK_PUBLIC_KEY = ""
+
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": " Recuity Estate Project Admin",
