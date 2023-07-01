@@ -7,7 +7,6 @@ from django.utils.translation import gettext_lazy as _
 class Card(BaseModel):
     
     card_number = models.IntegerField(
-        max_length=16, 
         null= True,
         blank= True,
         verbose_name= _("cards"),
@@ -15,7 +14,6 @@ class Card(BaseModel):
     )
 
     month = models.IntegerField(
-        max_length=2, 
         null= True,
         blank= True,
         verbose_name= _("month"),
@@ -23,7 +21,6 @@ class Card(BaseModel):
     )
 
     year = models.IntegerField(
-        max_length=4, 
         null= True,
         blank= True,
         verbose_name= _("year"),
@@ -39,7 +36,6 @@ class Card(BaseModel):
         )
     
     cvv =models.IntegerField(
-        max_length=3, 
         null= True,
         blank= True,
         verbose_name= _("CVV"),
@@ -54,5 +50,5 @@ class Card(BaseModel):
     # def __str__(self):
     #     return self.card_name
     
-    def __str__(self):
-        return f"{self.card_name} ({self.card_number})"
+    # def __str__(self):
+    #     return f"{self.card_name} ({self.card_number})"

@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.conf import settings
 from wallet.models import Wallet, WalletTransaction
-from .serializers import WalletSerializer, DepositSerializer
+from .serializers import WalletSerializer, DepositSerializer, WalletTransactionsSerializer
 import requests
 
 
@@ -43,3 +43,13 @@ class VerifyDeposit(APIView):
             WalletTransaction.objects.filter(paystack_payment_reference=reference).update(status=status,amount=amount)
             return Response(resp)
         return Response(resp)
+
+class TransactionsView(APIView):
+
+    serializer_class = WalletTransactionsSerializer
+
+    def get (self, request ):
+        user = request.user
+        transactions = WalletTransaction.objects.filter(wallet = user.wallet)
+        serilizer = self.serializer_class(transactions, many = True)
+        return Response(serilizer.data)

@@ -108,8 +108,8 @@ class State (models.Model):
     
     # end country provience fields
 
-    def __str__(self):
-        return str(self.province)
+    # def __str__(self):
+    #     return str(self.province)
 
     # country provience Metadata
     class Meta:

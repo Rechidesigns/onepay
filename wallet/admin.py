@@ -4,11 +4,13 @@ from wallet.models import Wallet, WalletTransaction
 
 @admin.register(Wallet)
 class WalletAdmin (admin.ModelAdmin):
-    list_display = ('user','currency', 'created_at',)
-    list_display_links = ('user','currency', 'created_at',)
+    list_display = ('user','currency', 'created_date',)
+    list_display_links = ('user','currency', 'created_date',)
+    readonly_fields = ("wallet_id", "pin")
 
 
 @admin.register(WalletTransaction)
 class WalletTransaction (admin.ModelAdmin):
-    list_display = ('wallet','transaction_type', 'amount','timestamp','status','paystack_payment_reference')
-    list_display_links = ('wallet','transaction_type', 'amount','timestamp','status')
+    list_display = ('wallet','type', 'amount','created_date','status',)
+    list_display_links = ('wallet','type', 'amount','created_date','status')
+    readonly_fields =("reference",)
