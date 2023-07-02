@@ -4,27 +4,18 @@ from helpers.common.basemodel import BaseModel
 from django.utils.translation import gettext_lazy as _
 
 
-class Card(BaseModel):
+class VirtualCard(BaseModel):
     
-    card_number = models.IntegerField(
-        null= True,
-        blank= True,
-        verbose_name= _("cards"),
-        help_text= _("Card number")
+    card_number = models.CharField(
+        max_length=16,
+        verbose_name=_("Card Number"),
+        help_text=_("The card number of the virtual card")
     )
-
-    month = models.IntegerField(
-        null= True,
-        blank= True,
-        verbose_name= _("month"),
-        help_text= _("Card ecperiry month")
-    )
-
-    year = models.IntegerField(
-        null= True,
-        blank= True,
-        verbose_name= _("year"),
-        help_text= _("Card expiry year")
+    
+    cvv = models.CharField(
+        max_length=4,
+        verbose_name=_("CVV"),
+        help_text=_("The CVV of the virtual card")
     )
 
     card_name = models.CharField(
@@ -36,12 +27,20 @@ class Card(BaseModel):
         )
     
     cvv =models.IntegerField(
-        null= True,
-        blank= True,
         verbose_name= _("CVV"),
         help_text= _("Card Verification Value")
     )
 
+    expiration_date = models.DateField(
+        verbose_name=_("Expiration Date"),
+        help_text=_("The expiration date of the virtual card")
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name=_("Active"),
+        help_text=_("Indicates whether the virtual card is active or not")
+    )
     
     class Meta:
         verbose_name = _("Card")

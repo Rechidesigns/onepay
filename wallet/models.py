@@ -15,7 +15,7 @@ class Wallet(BaseModel):
         User,
         on_delete=models.CASCADE,
         verbose_name= _("User Wallet"),
-        help_text= _("The type of currency the wallet will operate on")
+        help_text= _("The user detail that owns the wallet")
         )
 
     wallet_id = models.CharField(
@@ -61,7 +61,9 @@ class Wallet(BaseModel):
     def __str__(self):
         return str(self.user)
 
-
+STATUS =(
+    ('')
+)
 
 TRANSACTION_TYPES = (
 
@@ -127,4 +129,130 @@ class WalletTransaction(BaseModel):
     def __str__(self):
         return str(self.wallet)
 
+
+
+class UpComingPayment(BaseModel):
+
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name= _("User Upcoming payment"),
+        help_text= _("this holds the user scheduling the payment")
+        )
     
+    name = models.CharField(
+        max_length= 50,
+        verbose_name = _("Name"),
+        help_text= _("The purpose of the payment")
+        )
+
+    status = models.CharField(
+        max_length=15, 
+        default="pending",
+        verbose_name= _("Status"),
+        help_text= _("The status of the transaction")
+        )
+ 
+    amount = models.DecimalField(
+        max_digits=100, 
+        decimal_places=2,
+        verbose_name= _("Amount"),
+        help_text= _("The amount of the transaction in figures")
+        )
+    
+    class Meta:
+        verbose_name = _("Up-Coming Payment")
+        verbose_name_plural = _("Up-Coming Payments")
+
+    def __str__(self):
+        return str(self.user)
+
+
+class PaymentRequest(BaseModel):
+
+    requester = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='payment_requests',
+        verbose_name=_("Requester"),
+        help_text=_("The user requesting the payment")
+    )
+
+    recipient = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='received_payment_requests',
+        verbose_name=_("Recipient"),
+        help_text=_("The user receiving the payment request")
+    )
+
+    amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name=_("Amount"),
+        help_text=_("The amount requested for payment")
+    )
+
+    description = models.TextField(
+        verbose_name=_("Description"),
+        help_text=_("Description of the payment request or invoice")
+    )
+
+    status = models.CharField(
+        max_length=15, 
+        default="pending",
+        verbose_name= _("Status"),
+        help_text= _("The status of the transaction")
+        )
+    
+
+    class Meta:
+        verbose_name = _("Payment Request")
+        verbose_name_plural = _("Payment Requests")
+
+    # def __str__(self):
+    #     return str(self.requester)
+
+
+    def __str__(self):
+        return f"Payment Request #{self.id} from {self.requester.full_name} to {self.recipient.full_name}"
+
+
+
+class Beneficiary(BaseModel):
+
+    wallet = models.ForeignKey(
+        Wallet,
+        on_delete=models.CASCADE,
+        verbose_name=_("Wallet"),
+        help_text=_("The wallet associated with the beneficiary")
+    )
+
+    name = models.CharField(
+        max_length=100,
+        verbose_name=_("Beneficiary Name"),
+        help_text=_("The name of the beneficiary")
+    )
+
+    account_number = models.CharField(
+        max_length=20,
+        verbose_name=_("Account Number"),
+        help_text=_("The account number of the beneficiary")
+    )
+
+    bank_name = models.CharField(
+        max_length=100,
+        verbose_name=_("Bank Name"),
+        help_text=_("The name of the bank where the beneficiary's account is held")
+    )
+
+    class Meta:
+        verbose_name = _("Beneficiary")
+        verbose_name_plural = _("Beneficiary")
+
+    def __str__(self):
+        return str(self.name)
+
+
+
+

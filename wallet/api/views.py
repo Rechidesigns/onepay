@@ -50,7 +50,7 @@ class VerifyDeposit(APIView):
             status = resp['data']['status']
             amount = resp['data']['amount']
             WalletTransaction.objects.filter(paystack_payment_reference=reference).update(status=status,amount=amount)
-            return Response( {'status':'successful', 'message':'property has been uploaded successful'} , status = status.HTTP_201_CREATED )
+            return Response( {'status':'successful', 'message':' Your transaction was made successful'} , status = status.HTTP_201_CREATED )
 
         return Response( status = status.HTTP_400_BAD_REQUEST)
 
