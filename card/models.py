@@ -50,5 +50,5 @@ class Card(BaseModel):
     # def __str__(self):
     #     return self.card_name
     
-    # def __str__(self):
-    #     return f"{self.card_name} ({self.card_number})"
+    def __str__(self):
+        return f"{self.card_name} ({self.card_number})"

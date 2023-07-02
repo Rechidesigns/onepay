@@ -5,8 +5,8 @@ from . import views
 urlpatterns = [
     path('wallet_info/', views.WalletInfo.as_view(), name = 'wallet_info'),
     path('deposit/', views.DepositFunds.as_view(), name = 'deposit'),
-    path('deposit/verify/<str:reference>/', views.VerifyDeposit.as_view()),
-    path('transactions/', views.TransactionsView.as_view())
+    path('deposit/verify/<str:reference>/', views.VerifyDeposit.as_view(), name='verify_deposit'),
+    path('transactions/', views.TransactionsView.as_view(), name="transactions"),
 ]
 
 

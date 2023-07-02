@@ -15,6 +15,7 @@ class WalletInfo(APIView):
         return Response(data)
 
 
+    
 class DepositFunds(APIView):
 
     def post(self, request):

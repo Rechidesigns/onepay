@@ -18,13 +18,14 @@ class WalletSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Wallet
-        fields = ['id', 'currency', 'balance']
+        fields = ['wallet_id', 'currency', 'balance']
 
 
 def is_amount(value):
     if value <= 0:
         raise serializers.ValidationError({"detail": "Invalid Amount"})
     return value
+
 
 
 class DepositSerializer(serializers.Serializer):
@@ -48,7 +49,7 @@ class DepositSerializer(serializers.Serializer):
     #         status="pending",
     #     )
 
-    
+
 
 class WalletTransactionsSerializer(serializers.Serializer):
         

@@ -262,8 +262,8 @@ class KycApplication(BaseModel):
             ("merge_kyc", _("Merge KYC data with user Information")),
         ]
 
-    # def __str__(self):
-    #     return _("KYC #: ") + self.reference
+    def __str__(self):
+        return str(self.user)
 
     @property
     def age(self):

@@ -83,8 +83,8 @@ class User(AbstractUser):
         verbose_name = _("Register User")
         verbose_name_plural = _("Registered Users")
 
-    def __str__(self):
-        return self.email
+    # def __str__(self):
+    #     return str(self.email)
 
     def get_absolute_url(self):
         """Get url for user's detail view.
@@ -95,7 +95,8 @@ class User(AbstractUser):
         """
         return reverse("users:detail", kwargs={"email": self.pk})
     
-
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.email})"
 
 
 
