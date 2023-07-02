@@ -5,9 +5,12 @@ from django.conf import settings
 from wallet.models import Wallet, WalletTransaction
 from .serializers import WalletSerializer, DepositSerializer, WalletTransactionsSerializer
 import requests
+from rest_framework import status
 
 
 class WalletInfo(APIView):
+
+    serializer_class = WalletSerializer
 
     def get(self, request):
         wallet = Wallet.objects.get(user=request.user)
@@ -18,15 +21,20 @@ class WalletInfo(APIView):
     
 class DepositFunds(APIView):
 
+    serializer_class = DepositSerializer
+
     def post(self, request):
         serializer = DepositSerializer(
             data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
 
         resp = serializer.save()
-        return Response(resp)
+        return Response({'status':'successful','message':'Your deposit was successful','data':serializer.data }, status = status.HTTP_200_OK )
+    
 
 class VerifyDeposit(APIView):
+
+    serializer_class = DepositSerializer
 
     def get(self, request, reference):
         transaction = WalletTransaction.objects.get(
@@ -42,8 +50,11 @@ class VerifyDeposit(APIView):
             status = resp['data']['status']
             amount = resp['data']['amount']
             WalletTransaction.objects.filter(paystack_payment_reference=reference).update(status=status,amount=amount)
-            return Response(resp)
-        return Response(resp)
+            return Response( {'status':'successful', 'message':'property has been uploaded successful'} , status = status.HTTP_201_CREATED )
+
+        return Response( status = status.HTTP_400_BAD_REQUEST)
+
+
 
 class TransactionsView(APIView):
 
@@ -52,5 +63,6 @@ class TransactionsView(APIView):
     def get (self, request ):
         user = request.user
         transactions = WalletTransaction.objects.filter(wallet = user.wallet)
-        serilizer = self.serializer_class(transactions, many = True)
-        return Response(serilizer.data)
+        serializer = self.serializer_class(transactions, many = True)
+        return Response({'status':'successful','message':'all transactions are fetched successfully','data':serializer.data }, status = status.HTTP_200_OK )
+    

@@ -11,7 +11,7 @@ class WalletSerializer(serializers.ModelSerializer):
     """
     balance = serializers.SerializerMethodField()
 
-    def get_balance(self, obj):
+    def get_balance(self, obj) -> str:
         bal = WalletTransaction.objects.filter(
             wallet=obj, status="success").aggregate(Sum('amount'))['amount__sum']
         return bal
@@ -60,7 +60,7 @@ class WalletTransactionsSerializer(serializers.Serializer):
     status = serializers.CharField(read_only=True)
     created_date = serializers.DateTimeField(read_only=True,)
 
-    def get_user(self, obj):
+    def get_user(self, obj) -> str:
         return {
             "name": obj.wallet.user.full_name,
             "wallet_id": obj.wallet.wallet_id,
