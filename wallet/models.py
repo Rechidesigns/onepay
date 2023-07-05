@@ -62,15 +62,22 @@ class Wallet(BaseModel):
         return str(self.user)
 
 STATUS =(
-    ('')
+    ('pending', _("Pending")),
+    ("completed", _("completed")),
+    ("failed", _("failed")),
 )
 
-TRANSACTION_TYPES = (
+TRANSACTION_TYPE =(
+    ('payment', _("payment")),
+    ("Received", _("Received")),
+)
 
-        ('deposit', _('deposit')),
-        ('transfer', _('transfer')),
-        ('withdraw', _('withdraw')),
-    )
+# TRANSACTION_TYPES = (
+
+#         ('deposit', _('deposit')),
+#         ('transfer', _('transfer')),
+#         ('withdraw', _('withdraw')),
+#     )
 
 
 class WalletTransaction(BaseModel):
@@ -84,7 +91,7 @@ class WalletTransaction(BaseModel):
     
     type = models.CharField(
         max_length=200,   
-        choices=TRANSACTION_TYPES,
+        choices=TRANSACTION_TYPE,
         verbose_name= _("Type"),
         help_text= _("The type of ctransaction performed")
         )
@@ -95,6 +102,14 @@ class WalletTransaction(BaseModel):
         verbose_name= _("Amount"),
         help_text= _("The amount of the transaction in figures")
         )
+    
+    description = models.CharField(
+        max_length=50,
+        null= True,
+        blank= True,
+        verbose_name= _("Transaction Description"),
+        help_text= _("Description/purpose of the transaction"),
+    )
     
     status = models.CharField(
         max_length=15, 
@@ -220,14 +235,7 @@ class PaymentRequest(BaseModel):
 
 
 class Beneficiary(BaseModel):
-
-    wallet = models.ForeignKey(
-        Wallet,
-        on_delete=models.CASCADE,
-        verbose_name=_("Wallet"),
-        help_text=_("The wallet associated with the beneficiary")
-    )
-
+    
     name = models.CharField(
         max_length=100,
         verbose_name=_("Beneficiary Name"),
