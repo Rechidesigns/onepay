@@ -1,20 +1,11 @@
-from card.models import Virtual_Card, Bank_Card
+from datetime import date
+from card.models import BankCard
 from rest_framework import serializers
-from django.contrib.auth.models import User
 
 
 
+class BankCardSerializer(serializers.ModelSerializer):
 
-
-
-
-
-
-
-
-    # def get_user(self, obj) -> str:
-    #     return {
-    #         "name": obj.wallet.user.full_name,
-    #         "wallet_id": obj.wallet.wallet_id,
-
-    #     }
+    class Meta:
+        model = BankCard
+        fields = ['card_number','card_name', 'cvv', 'expiry_date','card_type', 'is_active',]

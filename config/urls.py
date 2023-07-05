@@ -47,8 +47,8 @@ urlpatterns += [
 
 urlpatterns += [
 
-    path("wallet/", include("wallet.api.urls")),
-    
+    # path("wallet/", include("wallet.api.urls")),
+    path("card/", include("card.api.urls")),
 ]
 
 if settings.DEBUG:
