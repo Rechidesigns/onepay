@@ -2,8 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.conf import settings
-from wallet.models import Wallet, WalletTransaction, Beneficiary
-from .serializers import WalletSerializer, DepositSerializer, WalletTransactionsSerializer, BeneficiarySerializer
+from wallet.models import Wallet, WalletTransaction, Beneficiary, PaymentRequest
+from .serializers import WalletSerializer, DepositSerializer, WalletTransactionsSerializer, BeneficiarySerializer, PaymentRequestSerializer
 import requests
 from rest_framework import status
 from rest_framework import serializers, generics
@@ -76,4 +76,27 @@ class BeneficiaryListCreateView(ListCreateAPIView):
 class BeneficiaryRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
     serializer_class = BeneficiarySerializer
     queryset = Beneficiary.objects.all()
+    lookup_field = "id"
+
+
+class PaymentRequestListCreateView(generics.ListCreateAPIView):
+    serializer_class = PaymentRequestSerializer
+
+    def get_queryset(self):
+        user_id = self.kwargs["user_id"]
+        return PaymentRequest.objects.filter(requester_id=user_id)
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': 'successful', 'message': 'Payment request created successfully', 'data': serializer.data},
+                            status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class PaymentRequestRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
+    serializer_class = PaymentRequestSerializer
+    queryset = PaymentRequest.objects.all()
     lookup_field = "id"

@@ -1,4 +1,5 @@
-from wallet.models import Wallet, WalletTransaction, Beneficiary
+from wallet.models import Wallet, WalletTransaction, Beneficiary, PaymentRequest
+
 from rest_framework import serializers
 from django.db.models import Sum
 from django.contrib.auth.models import User
@@ -66,10 +67,15 @@ class WalletTransactionsSerializer(serializers.ModelSerializer):
 
 
 
-
-
 class BeneficiarySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Beneficiary
         fields = ["id", "name", "account_number", "bank_name"]
+
+
+
+class PaymentRequestSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentRequest
+        fields = ["requester","recipient","amount","description", "status", "created_date"]
