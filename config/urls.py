@@ -50,7 +50,7 @@ urlpatterns += [
     path("wallet/", include("wallet.api.urls")),
     path("card/", include("card.api.urls")),
     path("locations/", include("locations.api.urls")),
-    # path("kyc/", include("kyc.api.urls")),
+    path("kyc/", include("kyc.api.urls")),
 
 ]
 

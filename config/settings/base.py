@@ -345,9 +345,9 @@ SIMPLE_JWT = {
    
 }
 
-PAYSTACK_SECRET_KEY = ""
+PAYSTACK_SECRET_KEY = "sk_live_9fb34f86b90c69acac72bd1b50af856bd583538b"
 
-PAYSTACK_PUBLIC_KEY = ""
+PAYSTACK_PUBLIC_KEY = "pk_live_82819a2863f34a87d3bcb740bbc852d5cd59391a"
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)

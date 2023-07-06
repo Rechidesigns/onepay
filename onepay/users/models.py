@@ -30,6 +30,16 @@ class User(AbstractUser):
     check forms.SignupForm and forms.SocialSignupForms accordingly.
     """
 
+    KYC_STATUS = (
+        ('unverified', _('Unverified')),
+        ('pending', _('Pending')),
+        ('verified', _('Verified')),
+        ('action_required', _('Action_required')),
+        ('cancelled', _('Cancelled')),
+        ('rejected', _('Rejected/Refused'))
+    )
+
+
     objects = UserManager()
 
     #: First and last name do not cover name patterns around the globe
@@ -72,6 +82,33 @@ class User(AbstractUser):
         verbose_name=_("Contact Number"),
         blank=True, null=True,
         help_text=_("The contact number of the customer.")
+    )
+    
+    # KYC section fo the user model 
+
+    kyc_complete = models.BooleanField(
+        verbose_name=_("KYC complete"),
+        null=True,
+        blank=True,
+        default=False,
+        help_text=_("Flag to determine if a cutomer have completed KYC verification")
+    )
+
+    kyc_complete_date = models.DateTimeField(
+        verbose_name=_("KYC complete date"),
+        blank=True,
+        null=True,
+        help_text=_("Timestamp when customer completed KYC verifiction process.")
+    )
+
+    kyc_status = models.CharField(
+        max_length=15,
+        verbose_name=_("KYC status"),
+        choices=KYC_STATUS,
+        default='Unverified',
+        blank=True,
+        null=True,
+        help_text=_("The .")
     )
 
     @property

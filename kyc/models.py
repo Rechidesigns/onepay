@@ -8,6 +8,9 @@ from onepay.users.models import User
 from helpers.common.basemodel import BaseModel
 from helpers.common.choices import ModelChoices
 from locations.models import Country, State
+import os
+import uuid
+
 
 class KycApplication(BaseModel):
     """
@@ -19,6 +22,17 @@ class KycApplication(BaseModel):
 
     Identity verification is a requirement for companies across a range of industries. Veriff offers compliance, fraud prevention and global scalability.
     """
+
+    def generate_filename(instance, filename):
+        # Get the file extension
+        ext = os.path.splitext(filename)[1]
+
+        # Generate a unique filename using a combination of a UUID and timestamp
+        unique_filename = f"{uuid.uuid4().hex}{ext}"
+
+        # Return the generated filename
+        return unique_filename
+
     # region Fields
     legal_first_names = models.CharField(
         max_length=255,
@@ -31,11 +45,6 @@ class KycApplication(BaseModel):
         verbose_name=_('Legal Last names'),
         blank=True, null=True,
         help_text=_("First name of the user submitting KYC application - As shown in documents."))
-
-    birth_date = models.DateField(
-        verbose_name=_('Date of Birth'),
-        blank=True, null=True,
-        help_text=_("""The user's date of birth as per the identification document. The date of birth must match The user's ID"""))
 
     email = models.EmailField(
         verbose_name=_('Email Address'),
@@ -54,15 +63,22 @@ class KycApplication(BaseModel):
         verbose_name=_('Address Line 2'),
         help_text=_("""The Address Line 2 of the user submitting KYC application. Must be from The user's country of Residence indicated at the time of registration."""))
 
-    zip_code = models.CharField(
-        max_length=10,
-        verbose_name=_('Zip Code'),
-        help_text=_("""The zip code or postal code of the user submitting KYC application. Must be from The user's country of Residence indicated at the time of registration."""))
+    state = models.ForeignKey(
+        State,
+        blank= True,
+        on_delete=models.CASCADE,
+        verbose_name=_('State/Region'),
+        help_text=_("""The State/Region/Province of the user submitting KYC application. Must be from The user's country of Residence indicated at the time of registration."""))
 
     city = models.CharField(
         max_length=255,
         verbose_name=_('City'),
         help_text=_("""The city of the user submitting KYC application. Must be from the users country of Residence indicated at the time of registration."""))
+
+    zip_code = models.CharField(
+        max_length=10,
+        verbose_name=_('Zip Code'),
+        help_text=_("""The zip code or postal code of the user submitting KYC application. Must be from The user's country of Residence indicated at the time of registration."""))
 
     identification_type = models.CharField(
         max_length=21,
@@ -79,23 +95,23 @@ class KycApplication(BaseModel):
         help_text=_("""Document that serves as a Proof of address. Chosen credential must not be expired. Document should be good condition and clearly visible. File is at least 1 MB in size and has at least 300 dpi resolution."""))
 
     proof_of_address_document = models.FileField(
-        storage="uploads/kyc/",
+        upload_to=generate_filename,
         verbose_name=_('Proof of Address'),
         help_text=_("""The document must contain your name, the address and should not be older than 90 days. Chosen credential must not be expired. Document should be good condition and clearly visible. File is at least 1 MB in size and has at least 300 dpi resolution."""))
 
     photo_id = models.FileField(
-        storage="uploads/kyc/",
+        upload_to=generate_filename,
         verbose_name=_('Photo ID(front)'),
         help_text=_("""The front side of The user's Photo Identitification. Chosen credential must not be expired. Document should be good condition and clearly visible. File is at least 1 MB in size and has at least 300 dpi resolution."""))
 
     photo_id_back = models.FileField(
-        storage="uploads/kyc/",
+        upload_to=generate_filename,
         verbose_name=_('Photo ID(back)'),
         blank=True, null=True,
         help_text=_("""The back side of The user's Photo Identitification. Chosen credential must not be expired. Document should be good condition and clearly visible. File is at least 1 MB in size and has at least 300 dpi resolution."""))
 
     selfie_with_id = models.FileField(
-        storage="uploads/kyc/",
+        upload_to=generate_filename,
         verbose_name=_('Selfie with ID'),
         help_text=_(
             """Upload a photo with yourself and your Passport or both sides of the ID Card. The face and the document must be clearly visible."""),
@@ -273,3 +289,4 @@ class KycApplication(BaseModel):
         return str(self.user.pk)
 
     get_object_user = property(get_user)
+
